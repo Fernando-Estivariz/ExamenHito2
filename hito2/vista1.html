@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f3f3f3; /* Cambia el color de fondo del formulario */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 70%;
+        }
+
+        .search-container input[type="submit"] {
+            background-color: #37adc2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        h1, h3 {
+            color: #37adc2;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Cambio de color para los cuadros de texto y selecciones */
+        input[type="text"],
+        input[type="date"],
+        input[type="tel"],
+        input[type="email"],
+        select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            background-color: #ffffff; /* Color de fondo de los cuadros de texto y selecciones */
+            color: #333; /* Nuevo color de texto */
+        }
+
+        /* Cambio de color de fondo para "OTRO" */
+        select option[value="OTRO"] {
+            background-color: #ffcc00; /* Cambia el color de fondo de "OTRO" */
+            color: #333; /* Cambia el color de texto de "OTRO" */
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 40px;
+            background: url('https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-down-b-512.png') no-repeat right center / 20px auto;
+        }
+
+        input[type="submit"] {
+            background-color: #37adc2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #289097;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 1px solid #37adc2;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #37adc2;
+        }
+
+        table th {
+            background-color: #37adc2;
+            color: white;
+        }
+
+        .results {
+            margin-top: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+        function validarTexto(input) {
+            var regex = /^[a-zA-Z\s]*$/;
+
+            if (!regex.test(input.value)) {
+                alert("Por favor, ingresa solo letras.");
+                input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // Eliminar caracteres no alfabéticos
+                return false;
+            }
+
+            return true;
+        }
+
+        function limpiarNoNumerico(elemento) {
+            elemento.value = elemento.value.replace(/[^\d+]/g, ''); // Remover caracteres no numéricos excepto '+'
+        }
+        
+        function validarTelefono(inputName) {
+    var telefonoInput = document.getElementsByName(inputName)[0];
+    var telefono = telefonoInput.value;
+
+    if (telefono.length >= 12 && telefono.length <= 13) {
+        if (telefono.startsWith("+591")) {
+            var numeroTelefono = telefono.substring(4); // Obtener el número sin el código de país
+            if (/^\d{8}$/.test(numeroTelefono)) {
+                return true; // Teléfono válido
+            } else {
+                alert("El número de teléfono debe tener 8 cifras después de +591.");
+                telefonoInput.value = "+591"; // Restaurar el valor inicial
+                return false;
+            }
+        } else {
+            alert("El número de teléfono debe empezar con +591.");
+            telefonoInput.value = "+591"; // Restaurar el valor inicial
+            return false;
+        }
+    } else {
+        alert("El número de teléfono debe estar en el formato +591XXXXXXXX.");
+        telefonoInput.value = "+591"; // Restaurar el valor inicial
+        return false;
+    }
+}
+    </script>
+</head>
+<body>
+    <div class="container"></div>
+        <div class="search-container">
+            <form id="mySearch" onsubmit="return doSearch()">
+                <input type="text" name="search" required>
+                <input type="submit" value="Buscar">
+            </form>
+        </div>
+    </form>
+    <table id="results"></table>
+    <div class="container">
+        <div class="form-container">
+    <h1>FORMULARIO DE INSCRIPCIONES</h1>
+    <h3>Datos personales</h3>
+    <form method="post" action="controlador1.php">
+        Nombres : <input type="text" style="text-transform:uppercase;" value="" onkeyup="javascript:this.value=this.value.toUpperCase();" name="nombre" required minlength="2" maxlength="50" onblur="validarTexto(this)"><br><br>
+        Apellido Paterno : <input type="text" onkeyup="javascript:this.value=this.value.toUpperCase();" name="ap_paterno"required minlength="2" maxlength="50" onblur="validarTexto(this)" ><br><br>
+        Apellido Materno : <input type="text" onkeyup="javascript:this.value=this.value.toUpperCase();" name="ap_materno"required minlength="2" maxlength="50" onblur="validarTexto(this)"><br><br>
+        Direccion : <input type="text" name="direccion"required minlength="2" maxlength="100" style="text-transform:uppercase;"><br><br>
+        Fecha de Nacimiento: <input type="date" name="fecha_nacimiento"required min="1900-01-01"><br><br>
+        Teléfono Fijo: <input type="tel" name="telf_fijo" value="+591" maxlength="13" oninput="limpiarNoNumerico(this);" onblur="validarTelefono('telf_fijo');"><br><br>
+        Teléfono Móvil: <input type="tel" name="telf_movil" value="+591" maxlength="13" oninput="limpiarNoNumerico(this);" onblur="validarTelefono('telf_movil');" required><br><br>
+        Lugar de Nacimiento: <select name="lugar_nacimiento" required>
+            <option value="COCHABAMBA">COCHABAMBA</option>
+            <option value="LA PAZ">LA PAZ</option>
+            <option value="SANTA CRUZ">SANTA CRUZ</option>
+            <option value="POTOSI">POTOSI</option>
+            <option value="ORURO">ORURO</option>
+            <option value="CHUQUISACA">CHUQUISACA</option>
+            <option value="BENI">BENI</option>
+            <option value="PANDO">PANDO</option>
+            <option value="TARIJA">TARIJA</option>
+            <option value="OTRO" selected >OTRO</option>
+        </select><br><br>
+        País: <select name="pais" required>
+            <option value="BRASIL">BRASIL</option>
+            <option value="ARGENTINA">ARGENTINA</option>
+            <option value="COLOMBIA">COLOMBIA</option>
+            <option value="PERÚ">PERÚ</option>
+            <option value="CHILE">CHILE</option>
+            <option value="ECUADOR">ECUADOR</option>
+            <option value="VENEZUELA">VENEZUELA</option>
+            <option value="BOLIVIA">BOLIVIA</option>
+            <option value="GUYANA">GUYANA</option>
+            <option value="PARAGUAY">PARAGUAY</option>
+            <option value="SURINAME">SURINAME</option>
+            <option value="URUGUAY">URUGUAY</option>
+            <option value="OTRO" selected >OTRO</option>
+        
+        </select><br><br>
+        Correo Electrónico : <input type="email" name="correo_electronico"><br><br required> 
+        Carrera: <select name="carrera" required>
+            <option value="INGENIERIA DE SISTEMAS">INGENIERIA DE SISTEMAS</option>
+            <option value="ARQUITECTURA">ARQUITECTURA</option>
+            <option value="DISEÑO GRÁFICO Y PRODUCCIÓN CROSSMEDIA">DISEÑO GRÁFICO Y PRODUCCIÓN CROSSMEDIA</option>
+            <option value="PUBLICIDAD Y MARKETING">PUBLICIDAD Y MARKETING</option>
+            <option value="DERECHO">DERECHO</option>
+            <option value="PERIODISMO">PERIODISMO</option>
+            <option value="PSICOLOGÍA">PSICOLOGÍA</option>
+            <option value="ENFERMERÍA">ENFERMERÍA</option>
+            <option value="BIOQUÍMICA Y FARMACIA">BIOQUÍMICA Y FARMACIA</option>
+            <option value="ODONTOLOGÍA">ODONTOLOGÍA</option>
+            <option value="MEDICINA">MEDICINA</option>
+            <option value="ADMINISTRACIÓN DE EMPRESAS">ADMINISTRACIÓN DE EMPRESAS</option>
+            <option value="ADMINISTRACIÓN DE HOTELERÍA Y TURISMO">ADMINISTRACIÓN DE HOTELERÍA Y TURISMO</option>
+            <option value="CONTADURÍA PÚBLICA" >CONTADURÍA PÚBLICA</option> 
+            <option value="INGENIERÍA COMERCIAL"  >INGENIERÍA COMERCIAL</option>
+            <option value="INGENIERÍA ECONÓMICA" >INGENIERÍA ECONÓMICA</option>
+            <option value="INGENIERÍA ECONÓMICA Y FINANCIERA">INGENIERÍA ECONÓMICA Y FINANCIERA</option>
+            <option value="OTRO" selected >OTRO</option>
+
+        </select><br><br>
+        <input type="submit" value="ACEPTAR">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+    <script>
+         // Función para cargar los resultados en una tabla
+            function loadResultsTable(resultsData) {
+            let resultsTable = document.getElementById("results");
+            resultsTable.innerHTML = ""; // Limpiar tabla existente
+
+            if (resultsData !== null && resultsData.length > 0) {
+                // Crear la cabecera de la tabla
+                let tableHeader = "<tr><th>ID</th><th>Nombre</th><th>Ap. Paterno</th><th>Ap. Materno</th><th>Dirección</th><th>Nacimiento</th><th>Teléfono</th><th>Nº Celular</th><th>Lugar Nacimiento</th><th>Pais</th><th>Email</th><th>Carrera</th></tr>";
+                resultsTable.innerHTML += tableHeader;
+
+                // Agregar filas de datos a la tabla
+                for (let r of resultsData) {
+                    let row = `<tr><td>${r.id}</td><td>${r.nombre}</td><td>${r.ap_paterno}</td><td>${r.ap_materno}</td><td>${r.direccion}</td><td>${r.fecha_nacimiento}</td><td>${r.telf_fijo}</td><td>${r.telf_movil}</td><td>${r.lugar_nacimiento}</td><td>${r.pais}</td><td>${r.correo_electronico}</td><td>${r.carrera}</td></tr>`;
+                    resultsTable.innerHTML += row;
+                }
+            } else {
+                resultsTable.innerHTML = "<p>No se encontraron resultados.</p>";
+            }
+        }
+        document.querySelector("#mySearch").addEventListener("submit", function (event) {
+            event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+            doSearch(); // Llamar a la función de búsqueda
+        });
+        function doSearch() {
+            // (A1) GET SEARCH TERM
+            var data = new FormData(document.getElementById("mySearch"));
+
+            // (A2) AJAX - USE HTTP:// NOT FILE://
+            fetch("controlador1.php", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(res => {
+                    loadResultsTable(res); // Cargar resultados en la tabla
+                });
+
+            return false;
+            }
+    </script> 
+    
+
+    
+</body>
+</html>
